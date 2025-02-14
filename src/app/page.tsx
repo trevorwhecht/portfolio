@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useAnimationControls, type Variants } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { TopographicBackground } from "../components/topographicBackground"
@@ -11,9 +11,55 @@ import { AboutSection } from "../components/(sections)/aboutSection"
 import { PortfolioSection } from "../components/(sections)/portfolioSection"
 import { ContactSection } from "../components/(sections)/contactSection"
 import cn from "classnames"
+import React from "react"
 
 export default function Home() {
   const { theme } = useTheme()
+  const firstLineControls = useAnimationControls()
+  const secondLineControls = useAnimationControls()
+  const buttonControls = useAnimationControls()
+  const [isFirstLineAnimating, setIsFirstLineAnimating] = React.useState(false)
+  const [isSecondLineAnimating, setIsSecondLineAnimating] = React.useState(false)
+
+  React.useEffect(() => {
+    const animateText = async () => {
+      // Start first line animation
+      setIsFirstLineAnimating(true)
+      await firstLineControls.start("visible")
+      setIsFirstLineAnimating(false)
+
+      // Start second line animation
+      setIsSecondLineAnimating(true)
+      await secondLineControls.start("visible")
+      setIsSecondLineAnimating(false)
+
+      // Show buttons
+      buttonControls.start("visible")
+    }
+    animateText()
+  }, [firstLineControls, secondLineControls, buttonControls])
+
+  const textVariants: Variants = {
+    hidden: { width: 0 },
+    visible: {
+      width: "100%",
+      transition: {
+        duration: 2,
+        ease: "easeInOut",
+      },
+    },
+  }
+
+  const buttonVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+      },
+    },
+  }
 
   return (
     <>
@@ -21,44 +67,57 @@ export default function Home() {
       <Navbar />
 
       <section id="home" className="min-h-screen flex flex-col items-center justify-center text-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-6"
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white"
-          >
-            Hello, I&apos;m{" "}
-            <span
-              className={cn(
-                "text-transparent bg-clip-text",
-                theme === "dark"
-                  ? "bg-gradient-to-r from-highlight-dark to-highlight-dark"
-                  : "bg-gradient-to-r from-highlight-light to-highlight-light",
-              )}
-            >
-              Trevor Hecht
-            </span>
-            .
-          </motion.h1>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-2xl md:text-4xl text-gray-600 dark:text-gray-300"
-          >
-            I&apos;m a full stack web developer.
-          </motion.h2>
+        <div className="flex flex-col items-center space-y-6">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="relative">
+              <motion.div
+                className={cn(
+                  "overflow-hidden whitespace-nowrap",
+                  isFirstLineAnimating && "border-r-4 border-gray-900 dark:border-white",
+                )}
+                initial="hidden"
+                animate={firstLineControls}
+                variants={textVariants}
+              >
+                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white">
+                  Hi, I&apos;m{" "}
+                  <span
+                    className={cn(
+                      "text-transparent bg-clip-text",
+                      theme === "dark"
+                        ? "bg-gradient-to-r from-highlight-dark to-highlight-dark"
+                        : "bg-gradient-to-r from-highlight-light to-highlight-light",
+                    )}
+                  >
+                    Trevor Hecht
+                  </span>
+                  .
+                </h1>
+              </motion.div>
+            </div>
+
+            <div className="relative">
+              <motion.div
+                className={cn(
+                  "overflow-hidden whitespace-nowrap",
+                  isSecondLineAnimating && "border-r-4 border-gray-600 dark:border-gray-300",
+                )}
+                initial="hidden"
+                animate={secondLineControls}
+                variants={textVariants}
+              >
+                <h2 className="text-4xl md:text-4xl text-gray-600 dark:text-gray-300">
+                  I&apos;m a full stack software developer.
+                </h2>
+              </motion.div>
+            </div>
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
             className="flex items-center justify-center gap-4"
+            initial="hidden"
+            animate={buttonControls}
+            variants={buttonVariants}
           >
             <Button
               variant="outline"
@@ -81,7 +140,7 @@ export default function Home() {
             </Button>
             <ThemeToggle />
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       <AboutSection />
@@ -96,3 +155,4 @@ export default function Home() {
     </>
   )
 }
+
