@@ -9,7 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Lenis from "lenis"
 import { Button } from "@/components/ui/button"
 import { SectionHeader } from "@/components/ui/section-header"
-import "./portfolioSection.css"
+import "./portFolioSection.css"
 
 gsap.registerPlugin(ScrollTrigger)
 
