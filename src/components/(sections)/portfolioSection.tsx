@@ -9,7 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Lenis from "lenis"
 import { Button } from "@/components/ui/button"
 import { SectionHeader } from "@/components/ui/section-header"
-import "./PortfolioSection.css"
+import "./portfolioSection.css"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -181,9 +181,6 @@ export function PortfolioSection() {
         {projects.map((project, index) => (
           <Card key={index} {...project} index={index} />
         ))}
-      </section>
-      <section className="portfolio-outro">
-        <h1 className="text-3xl font-semibold text-center">Let's build something amazing together.</h1>
       </section>
     </div>
   )

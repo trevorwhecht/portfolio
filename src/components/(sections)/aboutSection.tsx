@@ -68,7 +68,6 @@ const maxDelay = Math.max(...languageDelays, ...frameworkDelays)
 const headerDelay = maxDelay + 0.5 // Add 0.5s after the last card animation
 
 const ROTATION_RANGE = 20
-const HALF_ROTATION_RANGE = ROTATION_RANGE / 2
 
 interface TechCardProps {
   tech: {
