@@ -44,7 +44,7 @@ export default function Home() {
     visible: {
       width: "100%",
       transition: {
-        duration: 2,
+        duration: 1.5, // Reduced from 2 to 1.5 to make it slightly faster
         ease: "easeInOut",
       },
     },
@@ -123,7 +123,7 @@ export default function Home() {
               variant="outline"
               size="lg"
               className={cn(
-                "border-2",
+                "border-2 relative group",
                 theme === "dark"
                   ? "border-highlight-dark text-highlight-dark hover:bg-highlight-dark/10"
                   : "border-highlight-light text-highlight-light hover:bg-highlight-light/10",
@@ -137,8 +137,12 @@ export default function Home() {
                 View my work
                 <ChevronDown className="w-4 h-4" />
               </a>
+              <span className="absolute inset-0 bg-current opacity-0 group-hover:animate-ping rounded-lg"></span>
             </Button>
-            <ThemeToggle />
+            <div className="relative group">
+              <ThemeToggle />
+              <span className="absolute inset-0 bg-current opacity-0 group-hover:animate-ping rounded-full"></span>
+            </div>
           </motion.div>
         </div>
       </section>
